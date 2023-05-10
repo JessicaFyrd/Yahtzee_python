@@ -22,9 +22,9 @@ class PlateauDeJeu :
 
         #Initialisation des joueurs
         self.nbJoueur = nbJoueur
-        self.listeJoueurs = []
-        for n in (self.nbJoueur) :
-            self.listeJoueurs[n] = Joueur("Joueur ",n + 1)
+        self.listeJoueurs = list()
+        for n in range(self.nbJoueur) :
+            self.listeJoueurs.append(Joueur(f"Joueur {n + 1}"))
 
         #Initialisation du joueur actif
         self.indexJoueur = 0
