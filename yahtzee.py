@@ -4,13 +4,30 @@ import random
 class Joueur :
     def __init__(self,pseudo):
         self.pseudo = pseudo
-        self.score = 0  
+        self.score = 0 
+        self.play = 1 
     
     def getPseudo(self):
         print(self.pseudo)
 
     def getScore(self):
         print(self.score)
+
+
+class Des :
+    des = list()
+
+    def __init__(self):
+        for i in range (6) :
+            self.des.append(0)
+    
+    def setNum(self):
+        for i in range (6) :
+            self.des[i] = random.randrange(1, 7, 1)
+
+    def getNum(self):
+        print(self.des)
+         
 
 
 class PlateauDeJeu :
@@ -34,7 +51,9 @@ class PlateauDeJeu :
         self.tour = tour + 1
 
     def getTour(self):
+        print("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-")
         print("Tour : ", self.tour)
+        print("\n")
 
     def setJoueur(self, indexJoueur) :
         self.indexJoueur = indexJoueur
@@ -43,22 +62,29 @@ class PlateauDeJeu :
     def getJoueur(self):
         print(self.joueur.getPseudo())
     
+    def relancerDe(self):
+        self.play = random.randrange(0, 2, 1)
+        if (self.play == 1):
+            print("Relancer des dés :")
+    
 
 class Partie :
     i = 0
     j = 0
+    n = 0
 
     def __init__(self, nbJoueur):
         self.nbDeTour = 13
         self.PDJ = PlateauDeJeu(nbJoueur)
+        self.D = Des()
 
     def debut(self):
         self.state = "start"
-        print("Début de la partie \n")
+        print("DÉBUT DE LA PARTIE\n")
 
     def finDeJeu(self):
         self.state = "stop"
-        print("Fin de la partie \n")
+        print("FIN DE LA PARTIE\n")
     
     def partie(self):
         self.debut()
@@ -68,7 +94,15 @@ class Partie :
             for j in range (self.PDJ.nbJoueur):
                 self.PDJ.setJoueur(j)
                 self.PDJ.getJoueur()
-            print("\n")
+                self.D.setNum()
+                self.D.getNum()
+                for n in range (2):
+                    self.PDJ.relancerDe()
+                    if self.PDJ.play == 1 :
+                        self.D.setNum()
+                        self.D.getNum()
+                    
+                print("\n")
         self.finDeJeu()
 
 
