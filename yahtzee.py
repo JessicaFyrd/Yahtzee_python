@@ -8,12 +8,14 @@ class Joueur(ABC) : # hériter de ABC(Abstract base class)
         self.score = 0 
         self.play = 1 
 
+    #Setter
     def setPseudo(self,pseudo):
         self.pseudo = pseudo
     
     def setScore(self,score):
         self.score = score
 
+    #Getter
     def getPseudo(self):
         print(self.pseudo)
     
@@ -24,6 +26,25 @@ class Joueur(ABC) : # hériter de ABC(Abstract base class)
     @abstractmethod  # un décorateur pour définir une méthode abstraite
     def relancerDe(self):
         pass
+
+
+class JoueurHumain(Joueur) :
+    #Relancer les dés (choix utilisateur)
+    def relancerDe(self):
+        #Demande à l'utilisateur
+        choix = input('Souhaitez vous relancer les dés ? O ou N : ')
+        
+        #Si le choix n'est pas une entrée valide
+        while (choix != 'O' and choix != 'Oui' and choix != 'Oui' and choix != 'oui' and choix != 'N' and choix != 'n' and choix != 'Non' and choix != 'non') :
+            print('Vous devez choisir O ou N. ')
+            choix = str(input('Souhaitez vous relancer les dés ? O ou N : '))
+        
+        #Mettre la variable de lancé de dé à 0 ou 1 selon la réponse de l'utilisateur
+        if choix == 'O' or choix == 'o' or choix == 'Oui' or choix == 'oui':
+            self.play = 1
+            print("Relancer des dés :")
+        elif choix == 'N' or choix == 'n' or choix == 'Non' or choix == 'non':
+            self.play = 0  
 
 
 class JoueurOrdi(Joueur) :
@@ -43,12 +64,12 @@ class Des :
             self.des.append(0)
     
     #Lancée des 6 dès (6x valeurs aléatoires entre 1 et 6)
-    def setNum(self):
+    def setNumDes(self):
         for i in range (6) :
             self.des[i] = random.randrange(1, 7, 1)
 
     #Affichage de la valeurs des 6 dès
-    def getNum(self):
+    def getNumDes(self):
         print(self.des)
          
 
@@ -63,7 +84,8 @@ class PlateauDeJeu :
         #Initialisation des joueurs
         self.nbJoueur = nbJoueur
         self.listeJoueurs = list()
-        for n in range(self.nbJoueur) :
+        self.listeJoueurs.append(JoueurHumain(f"Joueur 1"))
+        for n in range(1,self.nbJoueur) :
             self.listeJoueurs.append(JoueurOrdi(f"Joueur {n + 1}"))
 
         #Initialisation du joueur actif
@@ -117,18 +139,24 @@ class Partie :
         for i in range (self.nbDeTour):
             self.PDJ.setTour(i)
             self.PDJ.getTour()
+
             for j in range (self.PDJ.nbJoueur):
                 self.PDJ.setJoueur(j)
                 self.PDJ.getJoueur()
-                self.D.setNum()
-                self.D.getNum()
-                for n in range (2):
+                self.D.setNumDes()
+                self.D.getNumDes()
+                
+                n = 0
+                while n < 2 and self.PDJ.joueur.play == 1 :
                     self.PDJ.joueur.relancerDe()
                     if self.PDJ.joueur.play == 1 :
-                        self.D.setNum()
-                        self.D.getNum()
+                        self.D.setNumDes()
+                        self.D.getNumDes()
+                    n = n + 1
                     
                 print("\n")
+                self.PDJ.joueur.play = 1
+
         self.finDeJeu()
 
 
