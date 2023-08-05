@@ -1,5 +1,10 @@
 import random
 from abc import ABC, abstractmethod
+import json
+
+with open("/Users/jess/Documents/Python/Yahtzee/config.json", "r") as jsonfile:
+    json_config = json.load(jsonfile)
+nbJoueur_config = int(json_config['nbJoueur'])
 
 
 class Joueur(ABC) : # hériter de ABC(Abstract base class)  
@@ -162,5 +167,5 @@ class Partie :
 
 
 
-jeu = Partie(2)
+jeu = Partie(nbJoueur_config)
 jeu.partie()
